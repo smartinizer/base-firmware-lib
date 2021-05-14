@@ -29,10 +29,6 @@
       "name": "ArduinoJson"
     },
     {
-      "owner": "arduino-libraries",
-      "name": "WiFi"
-    },
-    {
       "name": "PubSubClient"
     },
     {
