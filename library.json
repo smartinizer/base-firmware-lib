@@ -24,23 +24,18 @@
   "dependencies": [
     {
       "name": "SPIFFS",
-      "platforms": "espressif32"
     },
     {
       "name": "ArduinoJson",
-      "platforms": "espressif32"
     },
     {
       "name": "HTTPClient",
-      "platforms": "espressif32"
     },
     {
-      "name": "WiFi",
-      "platforms": "espressif32"
+      "name": "arduino-libraries/WiFi",
     },
     {
       "name": "PubSubClient",
-      "platforms": "espressif32"
     },
     {
       "name": "ESP32httpUpdate",
@@ -48,7 +43,6 @@
     },
     {
       "name": "ESPAsyncWebServer",
-      "platforms": "espressif32"
     }
     
   ]
