@@ -29,10 +29,8 @@
       "name": "ArduinoJson"
     },
     {
-      "name": "HTTPClient"
-    },
-    {
-      "name": "arduino-libraries/WiFi"
+      "owner": "arduino-libraries",
+      "name": "WiFi"
     },
     {
       "name": "PubSubClient"
@@ -42,7 +40,8 @@
       "versions": "https://github.com/suculent/esp32-http-update/archive/refs/heads/master.zip"
     },
     {
-      "name": "ESPAsyncWebServer"
+      "name": "ESPAsyncWebServer",
+      "versions": "https://github.com/me-no-dev/ESPAsyncWebServer/archive/refs/heads/master.zip"
     }
     
   ]
