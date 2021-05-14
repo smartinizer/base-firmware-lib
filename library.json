@@ -37,11 +37,11 @@
     },
     {
       "name": "ESP32httpUpdate",
-      "versions": "https://github.com/suculent/esp32-http-update/archive/refs/heads/master.zip"
+      "version": "https://github.com/suculent/esp32-http-update/archive/refs/heads/master.zip"
     },
     {
       "name": "ESPAsyncWebServer",
-      "versions": "https://github.com/me-no-dev/ESPAsyncWebServer/archive/refs/heads/master.zip"
+      "version": "https://github.com/me-no-dev/ESPAsyncWebServer/archive/refs/heads/master.zip"
     }
     
   ]
