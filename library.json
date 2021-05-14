@@ -23,26 +23,26 @@
   "platforms": ["espressif32"],
   "dependencies": [
     {
-      "name": "SPIFFS",
+      "name": "SPIFFS"
     },
     {
-      "name": "ArduinoJson",
+      "name": "ArduinoJson"
     },
     {
-      "name": "HTTPClient",
+      "name": "HTTPClient"
     },
     {
-      "name": "arduino-libraries/WiFi",
+      "name": "arduino-libraries/WiFi"
     },
     {
-      "name": "PubSubClient",
+      "name": "PubSubClient"
     },
     {
       "name": "ESP32httpUpdate",
       "versions": "https://github.com/suculent/esp32-http-update/archive/refs/heads/master.zip"
     },
     {
-      "name": "ESPAsyncWebServer",
+      "name": "ESPAsyncWebServer"
     }
     
   ]
