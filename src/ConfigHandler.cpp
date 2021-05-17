@@ -318,17 +318,17 @@ namespace config{
 
     void downloadStaticFiles(){
         // index.html
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/index.html", "/index.html", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/index.html", "/index.html", false);
         // config.html
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/config.html", "/config.html", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/config.html", "/config.html", false);
         // config-firmware.html
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/config-firmware.html", "/config-firmware.html", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/config-firmware.html", "/config-firmware.html", false);
         // installing-firmware.html
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/installing-firmware.html", "/config-firmware.html", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/installing-firmware.html", "/config-firmware.html", false);
         // stype.css
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/style.css", "/style.css", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/style.css", "/style.css", false);
         // wifi.html
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/wifi.html", "/wifi.html", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/wifi.html", "/wifi.html", false);
     }
 
     void cleanFlashExceptWifiConf(){
