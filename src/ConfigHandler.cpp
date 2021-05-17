@@ -3,7 +3,7 @@
 
 namespace config{
 
-    const char* ca_cert =
+    const char* lets_encrypt_ca_cert =
         "-----BEGIN CERTIFICATE-----\n"
         "MIIFFjCCAv6gAwIBAgIRAJErCErPDBinU/bWLiWnX1owDQYJKoZIhvcNAQELBQAw\n"
         "TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh\n"
@@ -35,6 +35,100 @@ namespace config{
         "nLRbwHOoq7hHwg==\n"
         "-----END CERTIFICATE-----\n";
 
+
+    const char* digi_cert_ca_cert =
+        "-----BEGIN CERTIFICATE-----\n" \
+        "MIIDxTCCAq2gAwIBAgIQAqxcJmoLQJuPC3nyrkYldzANBgkqhkiG9w0BAQUFADBs\n" \
+        "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" \
+        "d3cuZGlnaWNlcnQuY29tMSswKQYDVQQDEyJEaWdpQ2VydCBIaWdoIEFzc3VyYW5j\n" \
+        "ZSBFViBSb290IENBMB4XDTA2MTExMDAwMDAwMFoXDTMxMTExMDAwMDAwMFowbDEL\n" \
+        "MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3\n" \
+        "LmRpZ2ljZXJ0LmNvbTErMCkGA1UEAxMiRGlnaUNlcnQgSGlnaCBBc3N1cmFuY2Ug\n" \
+        "RVYgUm9vdCBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMbM5XPm\n" \
+        "+9S75S0tMqbf5YE/yc0lSbZxKsPVlDRnogocsF9ppkCxxLeyj9CYpKlBWTrT3JTW\n" \
+        "PNt0OKRKzE0lgvdKpVMSOO7zSW1xkX5jtqumX8OkhPhPYlG++MXs2ziS4wblCJEM\n" \
+        "xChBVfvLWokVfnHoNb9Ncgk9vjo4UFt3MRuNs8ckRZqnrG0AFFoEt7oT61EKmEFB\n" \
+        "Ik5lYYeBQVCmeVyJ3hlKV9Uu5l0cUyx+mM0aBhakaHPQNAQTXKFx01p8VdteZOE3\n" \
+        "hzBWBOURtCmAEvF5OYiiAhF8J2a3iLd48soKqDirCmTCv2ZdlYTBoSUeh10aUAsg\n" \
+        "EsxBu24LUTi4S8sCAwEAAaNjMGEwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQF\n" \
+        "MAMBAf8wHQYDVR0OBBYEFLE+w2kD+L9HAdSYJhoIAu9jZCvDMB8GA1UdIwQYMBaA\n" \
+        "FLE+w2kD+L9HAdSYJhoIAu9jZCvDMA0GCSqGSIb3DQEBBQUAA4IBAQAcGgaX3Nec\n" \
+        "nzyIZgYIVyHbIUf4KmeqvxgydkAQV8GK83rZEWWONfqe/EW1ntlMMUu4kehDLI6z\n" \
+        "eM7b41N5cdblIZQB2lWHmiRk9opmzN6cN82oNLFpmyPInngiK3BD41VHMWEZ71jF\n" \
+        "hS9OMPagMRYjyOfiZRYzy78aG6A9+MpeizGLYAiJLQwGXFK3xPkKmNEVX58Svnw2\n" \
+        "Yzi9RKR/5CYrCsSXaQ3pjOLAEFe4yHYSkVXySGnYvCoCWw9E1CAx2/S6cCZdkGCe\n" \
+        "vEsXCS+0yx5DaMkHJ8HSXPfqIbloEpw8nL+e/IBcm2PN7EeqJSdnoDfzAIJ9VNep\n" \
+        "+OkuE6N36B9K\n" \
+        "-----END CERTIFICATE-----\n";
+
+
+        void downloadFile(String url, String filename, bool overwrite){
+        if(SPIFFS.exists(filename) && !overwrite){
+            Serial.println("File " + filename + " already exists, skipping download!");
+            return;
+        }
+
+        
+
+        WiFiClientSecure *client = new WiFiClientSecure;
+        if (client)
+        {
+            client->setCACert(digi_cert_ca_cert);
+            {
+                // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is
+                HTTPClient https;
+
+                Serial.print("[HTTPS] begin...\n");
+                if (https.begin(*client, url))
+                { // HTTPS
+                    Serial.print("[HTTPS] GET...\n");
+                    // start connection and send HTTP header
+                    int httpCode = https.GET();
+
+                    // httpCode will be negative on error
+                    if (httpCode > 0)
+                    {
+                        // HTTP header has been send and Server response header has been handled
+                        Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+
+                        // file found at server
+                        if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY)
+                        {
+                            
+                            File file = SPIFFS.open(filename, "w");
+                            if (!file)
+                            {
+                                Serial.println("Konnte " + filename + " nicht schreiben");
+                                return;
+                            }
+                            String payload = https.getString();
+                            file.print(payload);
+                            Serial.println("Wrote " + filename + " to SPIFFS");
+                            file.close();
+
+                        }
+                    }
+                    else
+                    {
+                        Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
+                    }
+                    https.end();
+                }
+                else
+                {
+                    Serial.printf("[HTTPS] Unable to connect\n");
+                }
+
+                // End extra scoping block
+            }
+            delete client;
+        }
+        else
+        {
+            Serial.println("Unable to create client");
+        }
+
+    }
 
     void writeWifiCredentials(String ssid, String pw) {
         File wpa = SPIFFS.open("/wpa.conf", "w");
@@ -123,62 +217,7 @@ namespace config{
 
     void downloadFirmwareList(String url)
     {
-        File file = SPIFFS.open("/downloads/firmwares.json", "w");
-        if (!file)
-        {
-            Serial.println("Konnte /downloads/firmwares.json nicht schreiben");
-            return;
-        }
-
-        WiFiClientSecure *client = new WiFiClientSecure;
-        if (client)
-        {
-            client->setCACert(ca_cert);
-            {
-                // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is
-                HTTPClient https;
-
-                Serial.print("[HTTPS] begin...\n");
-                if (https.begin(*client, "https://smartinizer.devzero.cloud/firmwares.json"))
-                { // HTTPS
-                    Serial.print("[HTTPS] GET...\n");
-                    // start connection and send HTTP header
-                    int httpCode = https.GET();
-
-                    // httpCode will be negative on error
-                    if (httpCode > 0)
-                    {
-                        // HTTP header has been send and Server response header has been handled
-                        Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
-
-                        // file found at server
-                        if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY)
-                        {
-                            String payload = https.getString();
-                            file.print(payload);
-                            Serial.println("Wrote Firmware-List to SPIFFS");
-                        }
-                    }
-                    else
-                    {
-                        Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
-                    }
-                    https.end();
-                }
-                else
-                {
-                    Serial.printf("[HTTPS] Unable to connect\n");
-                }
-
-                // End extra scoping block
-            }
-            file.close();
-            delete client;
-        }
-        else
-        {
-            Serial.println("Unable to create client");
-        }
+        downloadFile(url, "/downloads/firmwares.json", true);
     }
 
     String getFirmwareList()
@@ -201,7 +240,7 @@ namespace config{
         String payload = "";
         if (client)
         {
-            client->setCACert(ca_cert);
+            client->setCACert(lets_encrypt_ca_cert);
             {
                 // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is
                 HTTPClient https;
@@ -277,5 +316,27 @@ namespace config{
         return obj[key].as<String>();
     }
 
+    void downloadStaticFiles(){
+        // index.html
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/index.html", "/index.html", false);
+        // config.html
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/config.html", "/config.html", false);
+        // config-firmware.html
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/config-firmware.html", "/config-firmware.html", false);
+        // installing-firmware.html
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/installing-firmware.html", "/config-firmware.html", false);
+        // stype.css
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/style.css", "/style.css", false);
+        // wifi.html
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/feature/static_data/data/wifi.html", "/wifi.html", false);
+    }
+
+    void cleanFlashExceptWifiConf(){
+        String ssid, pw;
+        std::tie(ssid, pw) = config::getWifiCredentialsfromwpaconf();
+        SPIFFS.format();
+        writeWifiCredentials(ssid, pw);
+        Serial.println("Erased everythin in the flash except the WIFI.conf!");
+    }
 
 }

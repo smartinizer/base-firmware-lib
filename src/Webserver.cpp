@@ -4,7 +4,7 @@ SmartinizerWebServer::SmartinizerWebServer(): server(80){
 
     // Send web page with input fields to client
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/index.html", String(), false);
+        request->send(200,"text/html", webbuilder::getIndexPage());
     });
     server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
         request->send(SPIFFS, "/wifi.html", String(), false);
@@ -15,7 +15,7 @@ SmartinizerWebServer::SmartinizerWebServer(): server(80){
 
     // Route to load style.css file
     server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/style.css", "text/css");
+        request->send(200,"text/css", webbuilder::getStylePage());
     });
     // Route to connect
     server.on("/connect", HTTP_POST, [](AsyncWebServerRequest *request){

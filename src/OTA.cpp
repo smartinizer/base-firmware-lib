@@ -14,6 +14,7 @@ namespace update {
             Serial.println("Found update config, starting firmware update!");
             String firmware_url = config::getUpdateConfig();
             config::deleteUpdateConfig();
+            config::cleanFlashExceptWifiConf();
 
             t_httpUpdate_return ret = ESPhttpUpdate.update(firmware_url);
             switch(ret) {

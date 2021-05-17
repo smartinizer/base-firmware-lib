@@ -33,8 +33,11 @@ void Smartinizer::setup(){
       Serial.println("Cant find config");
       connectionHandler->wifi_ap_setup();
     }
-    update::update_if_sheduled();
-    config::downloadFirmwareList("https://smartinizer.devzero.cloud/firmwares.json");
+    if(connectionHandler->isConnected()){
+      update::update_if_sheduled();
+      config::downloadStaticFiles();
+      config::downloadFirmwareList("https://raw.githubusercontent.com/smartinizer/data/main/firmwares.json");
+    }
     webserver = new SmartinizerWebServer();
 }
 
