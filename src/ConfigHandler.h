@@ -19,7 +19,8 @@ namespace config{
     String getFirmwareConfig(String url);
     void writeFirmwareConfig(String firmwareConfig);
     String getConfigByKey(String key);
-    
+    void downloadStaticFiles();
+    void cleanFlashExceptWifiConf();
 }
 
 #endif // ConfigHandler_h

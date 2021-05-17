@@ -8,5 +8,6 @@ namespace webbuilder{
     JsonArray getFirmwares();
     String getConfigPage();
     String getFirmwareConfigPage(String firmwareName);
-
+    String getIndexPage();
+    String getStylePage();
 }
