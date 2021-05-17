@@ -1,0 +1,8 @@
+{ "name": "smartinizer-core",
+  "description": "Smartinizer Core Lib",
+  "version": "0.1.1",
+  "private": true,
+  "release": {
+    "branches": ["main"]
+  }
+}
