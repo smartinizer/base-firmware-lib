@@ -324,7 +324,7 @@ namespace config{
         // config-firmware.html
         downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/config-firmware.html", "/config-firmware.html", false);
         // installing-firmware.html
-        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/installing-firmware.html", "/config-firmware.html", false);
+        downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/installing-firmware.html", "/installing-firmware.html", false);
         // stype.css
         downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/style.css", "/style.css", false);
         // wifi.html
