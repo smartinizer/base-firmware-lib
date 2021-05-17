@@ -8,6 +8,7 @@ void Smartinizer::setup(){
     Serial.begin(115200);
 
     mqtt = NULL;
+    usecase_callback = NULL;
 
     Serial.println("Setting up Smartinizer...");
 
@@ -23,21 +24,26 @@ void Smartinizer::setup(){
     String ssid, pw;
     std::tie(ssid, pw) = config::getWifiCredentialsfromwpaconf();
     if(ssid!=""){
+
       Serial.print("Trying to connect to ");
       Serial.println(ssid);
       if(connectionHandler->wifi_sta_setup(ssid.c_str(), pw.c_str())){
-          // start mqtt stuff
+        update::update_if_sheduled();
+        config::downloadStaticFiles();
+        config::downloadFirmwareList("https://raw.githubusercontent.com/smartinizer/data/main/firmwares.json");
+
+        // start usecase if already registered
+        if (usecase_callback){
           mqtt = new MqttHandler(usecase_callback);
+        }
+        
       };
+
     }else{
       Serial.println("Cant find config");
       connectionHandler->wifi_ap_setup();
     }
-    if(connectionHandler->isConnected()){
-      update::update_if_sheduled();
-      config::downloadStaticFiles();
-      config::downloadFirmwareList("https://raw.githubusercontent.com/smartinizer/data/main/firmwares.json");
-    }
+
     webserver = new SmartinizerWebServer();
 }
 
@@ -48,6 +54,14 @@ void Smartinizer::loop(){
   }
 }
 
+
 void Smartinizer::register_usecase(void (*callback_func)(char*, String)){
-   usecase_callback = callback_func;
+  
+  if (!usecase_callback){
+    usecase_callback = callback_func;
+    mqtt = new MqttHandler(usecase_callback);
+  }else{
+    Serial.println("Usecase already startet.");
+  }
+  
 }
