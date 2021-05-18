@@ -68,8 +68,6 @@ namespace config{
             return;
         }
 
-        
-
         WiFiClientSecure *client = new WiFiClientSecure;
         if (client)
         {

@@ -21,6 +21,7 @@ namespace config{
     String getConfigByKey(String key);
     void downloadStaticFiles();
     void cleanFlashExceptWifiConf();
+    void downloadFile(String url, String filename, bool overwrite);
 }
 
 #endif // ConfigHandler_h
