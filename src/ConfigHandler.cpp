@@ -329,12 +329,14 @@ namespace config{
         downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/wifi.html", "/wifi.html", false);
     }
 
-    void cleanFlashExceptWifiConf(){
+    void cleanFlashExceptFirmwareConf(){
         String ssid, pw;
         std::tie(ssid, pw) = config::getWifiCredentialsfromwpaconf();
+        String firmwareConfig = config::getFirmwareConfig();
         SPIFFS.format();
         writeWifiCredentials(ssid, pw);
-        Serial.println("Erased everythin in the flash except the WIFI.conf!");
+        config::writeFirmwareConfig(firmwareConfig);
+        Serial.println("Erased everythin in the flash except the WIFI and Firmware config!");
     }
 
 }
