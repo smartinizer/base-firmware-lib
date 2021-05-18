@@ -25,6 +25,8 @@ class Smartinizer {
         void register_usecase(void (*callback_func)(char*, String));
         void setup();
         void loop();
+        void downloadFile(String url, String fileName, bool overwrite);
+        String getConfigByKey(String key);
        
         MqttHandler* mqtt;
         ConnectionHandler* connectionHandler;

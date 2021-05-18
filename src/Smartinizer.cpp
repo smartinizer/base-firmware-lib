@@ -56,12 +56,18 @@ void Smartinizer::loop(){
 
 
 void Smartinizer::register_usecase(void (*callback_func)(char*, String)){
-  
   if (!usecase_callback){
     usecase_callback = callback_func;
     mqtt = new MqttHandler(usecase_callback);
   }else{
     Serial.println("Usecase already startet.");
   }
-  
+}
+
+void Smartinizer::downloadFile(String url, String fileName, bool overwrite){
+  config::downloadFile(url, fileName, overwrite);
+}
+
+String Smartinizer::getConfigByKey(String key){
+  return config::getConfigByKey(key);
 }
