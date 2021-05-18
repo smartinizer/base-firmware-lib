@@ -20,7 +20,7 @@ namespace config{
     void writeFirmwareConfig(String firmwareConfig);
     String getConfigByKey(String key);
     void downloadStaticFiles();
-    void cleanFlashExceptWifiConf();
+    void cleanFlashExceptFirmwareAndWifiConf();
     void downloadFile(String url, String filename, bool overwrite);
 }
 

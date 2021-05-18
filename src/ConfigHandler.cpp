@@ -329,7 +329,7 @@ namespace config{
         downloadFile("https://raw.githubusercontent.com/smartinizer/base-firmware-lib/main/data/wifi.html", "/wifi.html", false);
     }
 
-    void cleanFlashExceptFirmwareConf(){
+    void cleanFlashExceptFirmwareAndWifiConf(){
         String ssid, pw;
         std::tie(ssid, pw) = config::getWifiCredentialsfromwpaconf();
         String firmwareConfig = config::getFirmwareConfig();
