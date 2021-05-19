@@ -62,11 +62,13 @@ namespace config{
         "-----END CERTIFICATE-----\n";
 
 
-        void downloadFile(String url, String filename, bool overwrite){
+    void downloadFile(String url, String filename, bool overwrite){
         if(SPIFFS.exists(filename) && !overwrite){
             Serial.println("File " + filename + " already exists, skipping download!");
             return;
         }
+
+        
 
         WiFiClientSecure *client = new WiFiClientSecure;
         if (client)
@@ -128,6 +130,21 @@ namespace config{
 
     }
 
+    String readFile(String fileName){
+        File file = SPIFFS.open(fileName, "r");
+        String content = "";
+        if (!file)
+        {
+            Serial.println("Konnte update.conf nicht lesen");
+        }
+        else
+        {
+            content = file.readString();
+        }
+        file.close();
+        return content;
+    }
+
     void writeWifiCredentials(String ssid, String pw) {
         File wpa = SPIFFS.open("/wpa.conf", "w");
         if (!wpa){
@@ -185,17 +202,7 @@ namespace config{
 
     String getUpdateConfig()
     {
-        File config = SPIFFS.open("/update.conf", "r");
-        String update_config = "";
-        if (!config)
-        {
-            Serial.println("Konnte update.conf nicht lesen");
-        }
-        else
-        {
-            update_config = config.readString();
-        }
-        return update_config;
+        return readFile("/update.conf");
     }
 
     void deleteUpdateConfig()
@@ -220,20 +227,10 @@ namespace config{
 
     String getFirmwareList()
     {
-        File file = SPIFFS.open("/downloads/firmwares.json", "r");
-        String firmware_list = "";
-        if (!file)
-        {
-            Serial.println("Konnte update.conf nicht lesen");
-        }
-        else
-        {
-            firmware_list = file.readString();
-        }
-        return firmware_list;
+        return readFile("/downloads/firmwares.json")
     }
 
-    String getFirmwareConfig(String url){
+    String getFirmwareConfigSchema(String url){
         WiFiClientSecure *client = new WiFiClientSecure;
         String payload = "";
         if (client)
@@ -297,6 +294,10 @@ namespace config{
         }
     }
 
+    String getFirmwareConfig(){
+        return readFile("/firmware-config.json");
+    }
+
     String getConfigByKey(String key){
         File file = SPIFFS.open("/firmware-config.json", "r");
         StaticJsonDocument<2014> doc;
@@ -332,7 +333,7 @@ namespace config{
     void cleanFlashExceptFirmwareAndWifiConf(){
         String ssid, pw;
         std::tie(ssid, pw) = config::getWifiCredentialsfromwpaconf();
-        String firmwareConfig = config::getFirmwareConfig();
+        String firmwareConfig = config::getFirmwareConfigSchema();
         SPIFFS.format();
         writeWifiCredentials(ssid, pw);
         config::writeFirmwareConfig(firmwareConfig);
