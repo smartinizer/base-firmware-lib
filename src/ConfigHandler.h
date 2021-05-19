@@ -7,6 +7,7 @@
 #include <HTTPClient.h>
 
 namespace config{
+    String readFile(String fileName);
     void writeWifiCredentials(String ssid, String pw);
     void writeUpdateConfig(String firmware_url);
     void deleteWifiCredentials();
@@ -16,7 +17,7 @@ namespace config{
     void deleteUpdateConfig();
     void downloadFirmwareList(String url);
     String getFirmwareList();
-    String getFirmwareConfig(String url);
+    String getFirmwareConfigSchema(String url);
     void writeFirmwareConfig(String firmwareConfig);
     String getConfigByKey(String key);
     void downloadStaticFiles();

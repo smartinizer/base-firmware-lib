@@ -59,7 +59,7 @@ namespace webbuilder{
         }
         
         Serial.println("Firmware Config URL: " + configUrl);
-        String configJson = config::getFirmwareConfig(configUrl);
+        String configJson = config::getFirmwareConfigSchema(configUrl);
         String pageHTML = file.readString();
         pageHTML.replace("$CONFIG", configJson);
         file.close();
