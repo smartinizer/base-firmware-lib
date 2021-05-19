@@ -227,7 +227,7 @@ namespace config{
 
     String getFirmwareList()
     {
-        return readFile("/downloads/firmwares.json")
+        return readFile("/downloads/firmwares.json");
     }
 
     String getFirmwareConfigSchema(String url){
@@ -333,7 +333,7 @@ namespace config{
     void cleanFlashExceptFirmwareAndWifiConf(){
         String ssid, pw;
         std::tie(ssid, pw) = config::getWifiCredentialsfromwpaconf();
-        String firmwareConfig = config::getFirmwareConfigSchema();
+        String firmwareConfig = config::getFirmwareConfig();
         SPIFFS.format();
         writeWifiCredentials(ssid, pw);
         config::writeFirmwareConfig(firmwareConfig);
