@@ -30,7 +30,7 @@ void Smartinizer::setup(){
       if(connectionHandler->wifi_sta_setup(ssid.c_str(), pw.c_str())){
         update::update_if_sheduled();
         config::downloadStaticFiles();
-        config::downloadFirmwareList("https://raw.githubusercontent.com/smartinizer/data/main/firmwares.json");
+        config::downloadFirmwareList("https://raw.githubusercontent.com/smartinizer/Firmware-List/main/firmwares.json");
 
         // start usecase if already registered
         if (usecase_callback){
